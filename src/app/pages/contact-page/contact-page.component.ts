@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
-  selector:'page-pricing',
+  selector:'page-contact',
   imports: [],
-  templateUrl: './pricing-page.component.html',
+  templateUrl: './contact-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class AboutPageComponent implements OnInit {
+export default class ContactPageComponent implements OnInit {
     private title = inject(Title)
    private meta = inject(Meta);
 

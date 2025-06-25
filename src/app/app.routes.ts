@@ -7,11 +7,11 @@ export const routes: Routes = [
   },
   {
     path: 'contact',
-    loadComponent: ()=> import('./pages/contact-page copy/contact-page.component')
+    loadComponent: ()=> import('./pages/contact-page/contact-page.component')
   },
   {
     path: 'pricing',
-    loadComponent: ()=> import('./pages/pricing-page copy/pricing-page.component')
+    loadComponent: ()=> import('./pages/pricing-page/pricing-page.component')
   },
   {
     path: '**',
