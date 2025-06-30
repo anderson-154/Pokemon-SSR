@@ -4,12 +4,12 @@
 </h2>
 <hr class="my-2"/>
 
-@if (!isLoading()) {
-  <pokemon-list/>
+<!-- @if (!isLoading()) { -->
+  <pokemon-list [pokemons]="pokemons()"/>
 
-}@else{
-  <pokemon-list-skeleton/>
-}
+<!-- }@else{ -->
+  <!-- <pokemon-list-skeleton/> -->
+<!-- } -->
 
 
 

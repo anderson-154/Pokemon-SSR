@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, signal, inject, Application
 import { PokemonListComponent } from "../../pokemons/components/pokemon-list/pokemon-list.component";
 import { PokemonListSkeletonComponent } from "./ui/pokemon-list-skeleton/pokemon-list-skeleton.component";
 import { PokemonsService } from '../../pokemons/services/pokemons.service';
+import { SimplePokemon } from '../../pokemons/interfaces';
 
 @Component({
   selector: 'app-pokemons-page',
@@ -12,8 +13,9 @@ import { PokemonsService } from '../../pokemons/services/pokemons.service';
 })
 export default class PokemonsPageComponent implements OnInit{
 
+  public pokemons = signal<SimplePokemon[]>([])
   private pokemonsService = inject(PokemonsService);
-  public isLoading = signal(true);
+  // public isLoading = signal(true);
   // private appRef = inject(ApplicationRef);
 
   // private $appState = this.appRef.isStable.subscribe( isStable =>{
@@ -31,7 +33,7 @@ export default class PokemonsPageComponent implements OnInit{
   public loadPokemons(page = 0){
     this.pokemonsService.loadPage(page)
      .subscribe(pokemons =>{
-
+       this.pokemons.set(pokemons);
      })
   }
   // ngOnDestroy(): void {
