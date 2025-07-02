@@ -1,42 +1,124 @@
-@if( pokemon() === null ) {
-
-<div class="flex justify-center">
-  <h1 class="text-4xl font-bold">Loading...</h1>
+<!-- pokemon-page.component.html -->
+@if (isLoading()) {
+<div class="flex justify-center items-center h-screen">
+  <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
 </div>
+} @else { @let pokemonData = pokemon()!;
 
-} @else { @let myPokemon = pokemon()!;
+<main class="min-h-screen bg-gray-100 py-8">
+  <div class="max-w-4xl mx-auto px-4">
+    <!-- Header with ID and Name -->
+    <header class="text-center mb-8">
+      <h1 class="text-5xl font-bold text-gray-800 capitalize">
+        #{{ pokemonData.id.toString().padStart(3, '0') }} - {{ pokemonData.name }}
+      </h1>
+    </header>
 
-<section class="flex flex-col justify-center">
-  <div class="flex justify-center">
-    <h1 class="text-4xl font-bold capitalize my-5">{{ myPokemon.name }}</h1>
+    <!-- Main Content -->
+    <div class="grid md:grid-cols-2 gap-8">
+      <!-- Image and Cries Section -->
+      <section class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center">
+        <div class="relative w-64 h-64">
+          <img
+            [src]="pokemonData.sprites.other?.['official-artwork']?.front_default || pokemonData.sprites.front_default"
+            [alt]="pokemonData.name"
+            class="w-full h-full object-contain"
+          />
+        </div>
+
+        @if (pokemonData.cries.latest) {
+        <div class="mt-6 w-full">
+          <h2 class="text-xl font-semibold mb-2 text-gray-700">Pokémon Cry</h2>
+          <audio controls class="w-full">
+            <source [src]="pokemonData.cries.latest" type="audio/wav" />
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+        }
+      </section>
+
+      <!-- Details Section -->
+      <section class="space-y-6">
+        <!-- Types -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h2 class="text-xl font-semibold mb-3 text-gray-700">Types</h2>
+          <div class="flex flex-wrap gap-2">
+            @for (type of pokemonData.types; track type.slot) {
+            <span
+              class="px-4 py-2 rounded-full text-white capitalize font-medium {{ getTypeColor(type.type.name) }}"
+            >
+              {{ type.type.name }}
+            </span>
+            }
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h2 class="text-xl font-semibold mb-3 text-gray-700">Base Stats</h2>
+          <div class="space-y-3">
+            @for (stat of pokemonData.stats; track stat.stat.name) {
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-gray-700 capitalize">{{ stat.stat.name.replace('-', ' ') }}</span>
+                <span class="font-medium">{{ stat.base_stat }}</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div
+                  class="h-2.5 rounded-full bg-blue-600"
+                  [style.width.%]="(stat.base_stat / 255) * 100"
+                ></div>
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+
+        <!-- Physical Attributes -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-white rounded-xl shadow-lg p-6">
+            <h3 class="text-lg font-semibold mb-2 text-gray-700">Height</h3>
+            <p class="text-gray-600">{{ pokemonData.height / 10 }} m</p>
+          </div>
+          <div class="bg-white rounded-xl shadow-lg p-6">
+            <h3 class="text-lg font-semibold mb-2 text-gray-700">Weight</h3>
+            <p class="text-gray-600">{{ pokemonData.weight / 10 }} kg</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Abilities Section -->
+    <section class="mt-8 bg-white rounded-xl shadow-lg p-6">
+      <h2 class="text-2xl font-semibold mb-4 text-gray-700">Abilities</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        @for (ability of pokemonData.abilities; track ability.ability.name) {
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="font-medium capitalize text-gray-800">
+            {{ ability.ability.name.replace('-', ' ') }}
+          </h3>
+          @if (ability.is_hidden) {
+          <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full mt-1">Hidden Ability</span>
+          }
+        </div>
+        }
+      </div>
+    </section>
+
+    <!-- Moves Section -->
+    <section class="mt-8 bg-white rounded-xl shadow-lg p-6">
+      <h2 class="text-2xl font-semibold mb-4 text-gray-700">Moves</h2>
+      <div class="flex flex-wrap gap-2">
+        @for (move of pokemonData.moves.slice(0, 20); track move.move.name) {
+        <span class="px-3 py-1 bg-gray-100 rounded-full text-sm capitalize">
+          {{ move.move.name.replace('-', ' ') }}
+        </span>
+        }
+      </div>
+      @if (pokemonData.moves.length > 20) {
+      <p class="mt-3 text-gray-500">+ {{ pokemonData.moves.length - 20 }} more moves</p>
+      }
+    </section>
   </div>
-</section>
-
-<section class="flex flex-col justify-center items-center w-full">
-  <img
-    [src]="myPokemon.sprites.other?.['official-artwork']?.front_default"
-    [alt]="myPokemon.name"
-    class="w-64 h-64"
-    width="256px"
-    height="256px"
-  />
-
-  @if( myPokemon.cries.latest !== null ) {
-  <audio controls class="my-10">
-    <source [src]="myPokemon.cries.latest" type="audio/wav" />
-  </audio>
-  }
-</section>
-
-<section class="flex flex-col justify-center">
-  <h2 class="text-2xl font-bold mt-2">Abilities</h2>
-  <div class="flex flex-wrap items-center">
-    @for (ability of myPokemon.abilities; track ability.ability.name) {
-    <span class="mx-2">
-      {{ ability.ability.name }}
-    </span>
-    }
-  </div>
-</section>
-
+</main>
 }
