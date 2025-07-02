@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-pokemon-page',
+  selector: 'pokemon-page',
   imports: [],
   templateUrl: './pokemon-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
