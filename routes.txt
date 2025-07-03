@@ -1,0 +1,9 @@
+/about
+/contact
+/pricing
+/pokemons/1
+/pokemons/2
+/pokemons/3
+/pokemons/page/1
+/pokemons/page/2
+/pokemons/page/3
