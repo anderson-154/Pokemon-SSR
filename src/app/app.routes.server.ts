@@ -1,17 +1,15 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 
+// app.routes.server.ts
 export const serverRoutes: ServerRoute[] = [
-  // Rutas estáticas
+  // Rutas estáticas genéricas
   { path: 'about', renderMode: RenderMode.Prerender },
   { path: 'contact', renderMode: RenderMode.Prerender },
   { path: 'pricing', renderMode: RenderMode.Prerender },
 
-  // Rutas dinámicas (alternativa más confiable)
-  { path: 'pokemons/1', renderMode: RenderMode.Prerender },
-  { path: 'pokemons/2', renderMode: RenderMode.Prerender },
-  { path: 'pokemons/3', renderMode: RenderMode.Prerender },
-  { path: 'pokemons/page/1', renderMode: RenderMode.Prerender },
-  { path: 'pokemons/page/2', renderMode: RenderMode.Prerender },
+  // Rutas dinámicas (sin especificar valores concretos)
+  { path: 'pokemons/:id', renderMode: RenderMode.Prerender },
+  { path: 'pokemons/page/:page', renderMode: RenderMode.Prerender },
 
   // Redirección
   { path: '**', renderMode: RenderMode.Client }
