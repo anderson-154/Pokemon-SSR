@@ -3,11 +3,12 @@ name: Deploy Angular App to S3
 on:
   push:
     branches:
-      - master   # se ejecuta cuando hagas push a main
+      - master
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: AWS
 
     steps:
       - name: Checkout repository
@@ -16,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'   # ajusta según la versión que use tu proyecto
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
